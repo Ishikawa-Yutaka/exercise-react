@@ -147,9 +147,9 @@ export function useForm<T extends Record<string, any>>({
       // - それ以外はvalueを使用
       let fieldValue: any;
       if (type === "checkbox") {
-        /* ここに実装 */
+        fieldValue = (e.target as HTMLInputElement).checked;
       } else {
-        /* ここに実装 */
+        fieldValue = value;
       }
 
       // 値を更新
@@ -163,7 +163,16 @@ export function useForm<T extends Record<string, any>>({
       // - touched[fieldName]がtrueの場合のみバリデーション
       // - エラーを更新
       if (touched[fieldName]) {
-        /* ここに実装 */
+        const error = validateField(fieldName, fieldValue);
+        if (error) {
+          setErrors((prev) => ({ ...prev, [fieldName]: error }));
+        } else {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[fieldName];
+            return newErrors;
+          });
+        }
       }
     },
     [touched, validateField]
@@ -175,7 +184,17 @@ export function useForm<T extends Record<string, any>>({
   // - バリデーションを実行してエラーを更新
   const handleBlur = useCallback(
     (name: keyof T) => {
-      /* ここに実装 */
+      setTouched((prev) => ({ ...prev, [name]: true }));
+      const error = validateField(name, values[name]);
+      if (error) {
+        setErrors((prev) => ({ ...prev, [name]: error }));
+      } else {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[name];
+          return newErrors;
+        });
+      }
     },
     [values, validateField]
   );
@@ -188,7 +207,16 @@ export function useForm<T extends Record<string, any>>({
   // - isSubmittingの状態管理
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
-      /* ここに実装 */
+      e.preventDefault();
+      setIsSubmitting(true);
+      try {
+        const isFormValid = validateForm();
+        if (isFormValid) {
+          await onSubmit(values);
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
     },
     [validateForm, values, onSubmit]
   );
@@ -197,7 +225,10 @@ export function useForm<T extends Record<string, any>>({
   // 要件:
   // - すべての状態を初期値に戻す
   const resetForm = useCallback(() => {
-    /* ここに実装 */
+    setValues(initialValues);
+    setErrors({});
+    setTouched({});
+    setIsSubmitting(false);
   }, [initialValues]);
 
   // 【課題16】特定フィールドの値設定関数を実装してください
@@ -207,7 +238,23 @@ export function useForm<T extends Record<string, any>>({
   // - touchedの場合はバリデーション
   const setFieldValue = useCallback(
     (name: keyof T, value: any) => {
-      /* ここに実装 */
+      setValues((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+
+      if (touched[name]) {
+        const error = validateField(name, value);
+        if (error) {
+          setErrors((prev) => ({ ...prev, [name]: error }));
+        } else {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[name];
+            return newErrors;
+          });
+        }
+      }
     },
     [touched, validateField]
   );
@@ -217,10 +264,8 @@ export function useForm<T extends Record<string, any>>({
   // - フィールド名とエラーメッセージを受け取る
   // - エラーを更新
   const setFieldError = useCallback((name: keyof T, error: string) => {
-    /* ここに実装 */
+    setErrors((prev) => ({ ...prev, [name]: error }));
   }, []);
-
-  
 
   return {
     values,
