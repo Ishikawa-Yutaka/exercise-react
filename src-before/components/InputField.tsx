@@ -1,24 +1,21 @@
-import type React from 'react'
+import React, { type FC, type ChangeEvent } from 'react';;
 
 // 【課題18】InputFieldPropsインターフェースを定義してください
-// 要件:
-// - label: string (必須)
-// - name: string (必須)
-// - type?: 'text' | 'email' | 'password' | 'tel' | 'number' (オプション、デフォルト'text')
-// - value: string | number (必須)
-// - error?: string (オプション)
-// - touched?: boolean (オプション)
-// - required?: boolean (オプション)
-// - placeholder?: string (オプション)
-// - onChange: (e: React.ChangeEvent<HTMLInputElement>) => void (必須)
-// - onBlur: () => void (必須)
-type InputFieldProps = {}
+interface InputFieldProps {
+  label: string;
+  name: string;
+  type?: 'text' | 'email' | 'password' | 'tel' | 'number';
+  value: string | number;
+  error?: string;
+  touched?: boolean;
+  required?: boolean;
+  placeholder?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
+}
 
 // 【課題19】InputFieldコンポーネントを実装してください
-// 要件:
-// - React.FCを使用
-// - エラー表示は touched && error の場合のみ
-export const InputField: React.FC<InputFieldProps> = ({
+export const InputField: FC<InputFieldProps> = ({
   label,
   name,
   type = 'text',
@@ -31,57 +28,40 @@ export const InputField: React.FC<InputFieldProps> = ({
   onBlur,
 }) => {
   // 【課題20】エラー表示条件を実装してください
-  // 要件:
-  // - touchedがtrueかつerrorが存在する場合にtrue
-  const showError = /* ここに実装 */;
+  const showError = touched && error;
 
   return (
     <div className="form-field">
-      {/* 【課題21】ラベル要素を実装してください
-          要件:
-          - htmlFor属性でinput要素と関連付け
-          - 必須フィールドの場合は * を表示
-      */}
-      <label /* ここに実装 */>
+      {/* 【課題21】ラベル要素を実装してください */}
+      <label htmlFor={name} className="form-field__label">
         {label}
-        {/* ここに実装 - 必須マーク */}
+        {required && <span className="required-mark">*</span>}
       </label>
 
-      {/* 【課題22】input要素を実装してください
-          要件:
-          - id属性をnameと同じにする
-          - エラー時はinput--errorクラスを追加
-          - aria-invalid属性でエラー状態を示す
-          - aria-describedby属性でエラーメッセージと関連付け
-      */}
+      {/* 【課題22】input要素を実装してください */}
       <input
-        id={/* ここに実装 */}
+        id={name}
         name={name}
         type={type}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
         onBlur={onBlur}
-        className={`form-field__input ${/* ここに実装 - エラー時のクラス */}`}
-        aria-invalid={/* ここに実装 */}
-        aria-describedby={/* ここに実装 */}
+        className={`form-field__input ${showError ? 'form-field__input--error' : ''}`}
+        aria-invalid={!!showError}
+        aria-describedby={showError ? `${name}-error` : undefined}
       />
 
-      {/* 【課題23】エラーメッセージを実装してください
-          要件:
-          - showErrorがtrueの場合のみ表示
-          - id属性を{name}-errorにする
-          - role="alert"を追加
-      */}
+      {/* 【課題23】エラーメッセージを実装してください */}
       {showError && (
         <span
-          id={/* ここに実装 */}
+          id={`${name}-error`}
           className="form-field__error"
-          role={/* ここに実装 */}
+          role="alert"
         >
           {error}
         </span>
       )}
     </div>
   );
-}
+};

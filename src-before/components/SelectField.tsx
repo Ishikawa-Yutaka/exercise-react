@@ -1,25 +1,25 @@
-import type React from 'react'
+import React, { type FC, type ChangeEvent } from 'react';
 
 // 【課題24】SelectOptionインターフェースを定義してください
-// 要件:
-// - value: string (必須)
-// - label: string (必須)
-type SelectOption = {}
+interface SelectOption {
+  value: string;
+  label: string;
+}
 
 // 【課題25】SelectFieldPropsインターフェースを定義してください
-// 要件:
-// - label: string (必須)
-// - name: string (必須)
-// - value: string (必須)
-// - options: SelectOption[] (必須)
-// - error?: string (オプション)
-// - touched?: boolean (オプション)
-// - required?: boolean (オプション)
-// - onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void (必須)
-// - onBlur: () => void (必須)
-type SelectFieldProps = {}
+interface SelectFieldProps {
+  label: string;
+  name: string;
+  value: string;
+  options: SelectOption[];
+  error?: string;
+  touched?: boolean;
+  required?: boolean;
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onBlur: () => void;
+}
 
-export const SelectField: React.FC<SelectFieldProps> = ({
+export const SelectField: FC<SelectFieldProps> = ({
   label,
   name,
   value,
@@ -30,53 +30,34 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   onChange,
   onBlur,
 }) => {
-  const showError = touched && error
+  const showError = touched && error;
 
   return (
     <div className="form-field">
-      {/* 【課題26】ラベル要素を実装してください
-          要件:
-          - htmlFor属性でselect要素と関連付け
-          - 必須フィールドの場合は * を表示
-      */}
+      {/* 【課題26】ラベル要素を実装してください */}
       <label htmlFor={name} className="form-field__label">
         {label}
-        {/* ここに実装 - 必須マーク */}
+        {required && <span className="required-mark">*</span>}
       </label>
 
-      {/* 【課題27】select要素を実装してください
-          要件:
-          - id属性をnameと同じにする
-          - エラー時はselect--errorクラスを追加
-          - aria-invalid属性でエラー状態を示す
-          - aria-describedby属性でエラーメッセージと関連付け
-      */}
+      {/* 【課題27】select要素を実装してください */}
       <select
-        id={/* ここに実装 */}
+        id={name}
         name={name}
         value={value}
         onChange={onChange}
-        onBlur={() => onBlur()}
-        className={`form-field__select ${/* ここに実装 - エラー時のクラス */}`}
-        aria-invalid={/* ここに実装 */}
-        aria-describedby={/* ここに実装 */}
+        onBlur={onBlur}
+        className={`form-field__select ${showError ? 'form-field__select--error' : ''}`}
+        aria-invalid={!!showError}
+        aria-describedby={showError ? `${name}-error` : undefined}
       >
-        {/* 【課題28】デフォルトオプションを実装してください
-            要件:
-            - value=""
-            - 「選択してください」というテキスト
-        */}
-        <option /* ここに実装 */>選択してください</option>
+        {/* 【課題28】デフォルトオプションを実装してください */}
+        <option value="">選択してください</option>
 
-        {/* 【課題29】オプションリストを実装してください
-            要件:
-            - options配列をmapで展開
-            - keyとvalueにoption.valueを使用
-            - 表示テキストはoption.label
-        */}
+        {/* 【課題29】オプションリストを実装してください */}
         {options.map((option) => (
-          <option /* ここに実装 */>
-            {/* ここに実装 */}
+          <option key={option.value} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>
@@ -92,4 +73,4 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       )}
     </div>
   );
-}
+};
