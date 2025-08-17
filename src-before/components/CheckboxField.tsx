@@ -1,17 +1,17 @@
-import type React from 'react'
+import React, { type FC, type ChangeEvent } from 'react';
 
 // 【課題30】CheckboxFieldPropsインターフェースを定義してください
-// 要件:
-// - label: string (必須)
-// - name: string (必須)
-// - checked: boolean (必須)
-// - error?: string (オプション)
-// - touched?: boolean (オプション)
-// - onChange: (e: React.ChangeEvent<HTMLInputElement>) => void (必須)
-// - onBlur: () => void (必須)
-type CheckboxFieldProps = {}
+interface CheckboxFieldProps {
+  label: string;
+  name: string;
+  checked: boolean;
+  error?: string;
+  touched?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
+}
 
-export const CheckboxField: React.FC<CheckboxFieldProps> = ({
+export const CheckboxField: FC<CheckboxFieldProps> = ({
   label,
   name,
   checked,
@@ -20,38 +20,27 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
   onChange,
   onBlur,
 }) => {
-  const showError = touched && error
+  const showError = touched && error;
 
   return (
     <div className="form-field form-field--checkbox">
       <div className="checkbox-wrapper">
-        {/* 【課題31】checkbox input要素を実装してください
-            要件:
-            - type="checkbox"
-            - id属性をnameと同じにする
-            - checked属性を設定
-            - aria-invalid属性でエラー状態を示す
-            - aria-describedby属性でエラーメッセージと関連付け
-        */}
+        {/* 【課題31】checkbox input要素を実装してください */}
         <input
-          type={/* ここに実装 */}
-          id={/* ここに実装 */}
+          type="checkbox"
+          id={name}
           name={name}
-          checked={/* ここに実装 */}
+          checked={checked}
           onChange={onChange}
-          onBlur={() => onBlur()}
+          onBlur={onBlur}
           className="checkbox-wrapper__input"
-          aria-invalid={/* ここに実装 */}
-          aria-describedby={/* ここに実装 */}
+          aria-invalid={!!showError}
+          aria-describedby={showError ? `${name}-error` : undefined}
         />
 
-        {/* 【課題32】チェックボックスのラベルを実装してください
-            要件:
-            - htmlFor属性でinput要素と関連付け
-            - クリック可能な領域を広げる
-        */}
+        {/* 【課題32】チェックボックスのラベルを実装してください */}
         <label
-          htmlFor={/* ここに実装 */}
+          htmlFor={name}
           className="checkbox-wrapper__label"
         >
           {label}
@@ -69,4 +58,4 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
       )}
     </div>
   );
-}
+};
