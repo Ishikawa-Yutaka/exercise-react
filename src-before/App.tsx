@@ -1,28 +1,24 @@
-import React from 'react'
-import { ContactForm } from './components/ContactForm'
-import './styles/global.css'
+import React, { type FC } from 'react';
+import { ContactForm } from './components/ContactForm';
+import './styles/global.css';
 
 // 【課題51】Appコンポーネントを実装してください
-// 要件:
-// - React.FCを使用
-// - ヘッダー、メインコンテンツ、フィーチャーセクションを含む
-function App() {
+export const App: FC = () => {
   return (
     <div className='app'>
-      {/* 【課題52】ヘッダーセクションを実装してください
-          要件:
-          - h1タグでタイトル「React Form Example」
-          - pタグで説明文
-      */}
-      <header className='app-header'>{/* ここに実装 */}</header>
+      {/* 【課題52】ヘッダーセクションを実装してください */}
+      <header className='app-header'>
+        <div className='container'>
+          <h1>React Form Example</h1>
+          <p>カスタムフックとコンポーネント化した実践的なフォーム実装</p>
+        </div>
+      </header>
 
-      {/* 【課題53】メインセクションを実装してください
-          要件:
-          - ContactFormコンポーネントを配置
-          - containerクラスでラップ
-      */}
+      {/* 【課題53】メインセクションを実装してください */}
       <main className='app-main'>
-        <div className='container'>{/* ここに実装 */}</div>
+        <div className='container'>
+          <ContactForm />
+        </div>
       </main>
 
       {/* フィーチャーセクション */}
@@ -49,8 +45,14 @@ function App() {
           </div>
         </div>
       </section>
-    </div>
-  )
-}
 
-export default App
+      <footer className="app-footer">
+        <div className='container'>
+          <p>&copy; 2024 React Form Components - 学習目的で作成</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
