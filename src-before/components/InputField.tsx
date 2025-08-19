@@ -31,11 +31,11 @@ export const InputField: FC<InputFieldProps> = ({
   const showError = touched && error;
 
   return (
-    <div className="form-field">
+    <div className="input-field">
       {/* 【課題21】ラベル要素を実装してください */}
-      <label htmlFor={name} className="form-field__label">
+      <label htmlFor={name} className="input-field__label">
         {label}
-        {required && <span className="required-mark">*</span>}
+        {required && <span className="input-field__required">*</span>}
       </label>
 
       {/* 【課題22】input要素を実装してください */}
@@ -47,7 +47,7 @@ export const InputField: FC<InputFieldProps> = ({
         placeholder={placeholder}
         onChange={onChange}
         onBlur={onBlur}
-        className={`form-field__input ${showError ? 'form-field__input--error' : ''}`}
+        className={`input-field__input ${showError ? 'input-field__input--error' : ''}`}
         aria-invalid={!!showError}
         aria-describedby={showError ? `${name}-error` : undefined}
       />
@@ -56,7 +56,7 @@ export const InputField: FC<InputFieldProps> = ({
       {showError && (
         <span
           id={`${name}-error`}
-          className="form-field__error"
+          className="input-field__error"
           role="alert"
         >
           {error}

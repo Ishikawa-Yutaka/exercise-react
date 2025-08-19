@@ -1,4 +1,4 @@
-import React, { type FC, type ChangeEvent } from 'react';
+import React, { type FC, type ChangeEvent } from "react";
 
 // 【課題33】RadioOptionインターフェースを定義してください
 interface RadioOption {
@@ -33,7 +33,7 @@ export const RadioGroup: FC<RadioGroupProps> = ({
   const showError = touched && error;
 
   return (
-    <div className="form-field">
+    <div className="radio-group-field">
       {/* 【課題35】fieldset要素を実装してください */}
       <fieldset
         className="radio-group"
@@ -42,48 +42,44 @@ export const RadioGroup: FC<RadioGroupProps> = ({
         aria-describedby={showError ? `${name}-error` : undefined}
       >
         {/* 【課題36】legend要素を実装してください */}
-        <legend className="radio-group__label">
-          {label}
-          {required && <span className="required-mark">*</span>}
+        <legend className="radio-group__legend">
+          {label}を選択
+          {required && <span className="input-field__required">*</span>}
         </legend>
 
         {/* 【課題37】ラジオボタンのリストを実装してください */}
-        {options.map((option, index) => {
-          // 【課題38】ラジオボタンのIDを生成してください
-          const radioId = `${name}-${index}`;
+        <div className="radio-group__options">
+          {options.map((option, index) => {
+            // 【課題38】ラジオボタンのIDを生成してください
+            const radioId = `${name}-${index}`;
 
-          return (
-            <div key={option.value} className="radio-option">
-              {/* 【課題39】radio input要素を実装してください */}
-              <input
-                type="radio"
-                id={radioId}
-                name={name}
-                value={option.value}
-                checked={value === option.value}
-                onChange={onChange}
-                onBlur={onBlur}
-                className="radio-option__input"
-              />
+            return (
+              <div key={option.value} className="radio-option">
+                {/* 【課題39】radio input要素を実装してください */}
+                <input
+                  type="radio"
+                  id={radioId}
+                  name={name}
+                  value={option.value}
+                  checked={value === option.value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  className="radio-option__input"
+                />
 
-              {/* 【課題40】ラジオボタンのラベルを実装してください */}
-              <label
-                htmlFor={radioId}
-                className="radio-option__label"
-              >
-                {option.label}
-              </label>
-            </div>
-          );
-        })}
+                {/* 【課題40】ラジオボタンのラベルを実装してください */}
+                <label htmlFor={radioId} className="radio-option__label">
+                  <span className="radio-option__radio"></span>
+                  <span className="radio-option__text">{option.label}</span>
+                </label>
+              </div>
+            );
+          })}
+        </div>
       </fieldset>
 
       {showError && (
-        <span
-          id={`${name}-error`}
-          className="form-field__error"
-          role="alert"
-        >
+        <span id={`${name}-error`} className="radio-group__error" role="alert">
           {error}
         </span>
       )}

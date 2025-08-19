@@ -56,8 +56,8 @@ export function useForm<T extends Record<string, any>>({
       // - rules.requiredがtrueで値が空の場合
       // - 文字列の場合はtrimして空文字をチェック
       if (rules.required) {
-        if (!value || (typeof value === "string" && value.trim() === "")) {
-          return "この項目は必須です";
+        if (value === null || value === undefined || String(value).trim() === '') {
+          return 'この項目は必須です';
         }
       }
 
@@ -209,6 +209,12 @@ export function useForm<T extends Record<string, any>>({
     async (e: React.FormEvent) => {
       e.preventDefault();
       setIsSubmitting(true);
+      const allTouched: Partial<Record<keyof T, boolean>> = {};
+      Object.keys(values).forEach(key => {
+        allTouched[key as keyof T] = true;
+      });
+      setTouched(allTouched); // <--- ADD THIS LINE
+
       try {
         const isFormValid = validateForm();
         if (isFormValid) {

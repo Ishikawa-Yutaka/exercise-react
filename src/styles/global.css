@@ -14,7 +14,7 @@
 }
 
 html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
 }
@@ -160,7 +160,12 @@ body {
 .contact-form__form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+}
+
+.input-field,
+.checkbox-field,
+.radio-group-field {
+  margin-bottom: 2.25rem;
 }
 
 .contact-form__actions {
@@ -211,7 +216,7 @@ body {
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: #2d3748;
-  font-size: 0.875rem;
+  font-size: 1.05rem;
 }
 
 .input-field__required {
@@ -229,11 +234,15 @@ body {
 .input-field__textarea,
 .input-field__select {
   padding: 0.75rem 1rem;
-  border: 1px solid #cbd5e0;
+  border: 1px solid #a0aec0; /* 枠線の色を濃く変更 */
   border-radius: 6px;
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   background-color: white;
+}
+
+.input-field__select {
+  width: 185px;
 }
 
 .input-field__input:focus,
@@ -323,7 +332,7 @@ body {
 }
 
 .checkbox-field__checkmark::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -337,20 +346,28 @@ body {
   transition: transform 0.2s ease;
 }
 
-.checkbox-field__input:checked + .checkbox-field__label .checkbox-field__checkmark {
+.checkbox-field__input:checked
+  + .checkbox-field__label
+  .checkbox-field__checkmark {
   background-color: #667eea;
   border-color: #667eea;
 }
 
-.checkbox-field__input:checked + .checkbox-field__label .checkbox-field__checkmark::after {
+.checkbox-field__input:checked
+  + .checkbox-field__label
+  .checkbox-field__checkmark::after {
   transform: translate(-50%, -60%) rotate(45deg) scale(1);
 }
 
-.checkbox-field__input:focus + .checkbox-field__label .checkbox-field__checkmark {
+.checkbox-field__input:focus
+  + .checkbox-field__label
+  .checkbox-field__checkmark {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.checkbox-field__input--error + .checkbox-field__label .checkbox-field__checkmark {
+.checkbox-field__input--error
+  + .checkbox-field__label
+  .checkbox-field__checkmark {
   border-color: #e53e3e;
 }
 
@@ -403,7 +420,7 @@ body {
   margin-bottom: 0.75rem;
   font-weight: 600;
   color: #2d3748;
-  font-size: 0.875rem;
+  font-size: inherit;
 }
 
 .radio-group__required {
@@ -450,7 +467,7 @@ body {
 }
 
 .radio-option__radio::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -467,7 +484,9 @@ body {
   border-color: #667eea;
 }
 
-.radio-option__input:checked + .radio-option__label .radio-option__radio::after {
+.radio-option__input:checked
+  + .radio-option__label
+  .radio-option__radio::after {
   transform: translate(-50%, -50%) scale(1);
 }
 
@@ -644,4 +663,16 @@ body {
   .radio-option__radio {
     border-width: 3px;
   }
+}
+
+/* ========================================
+   プレースホルダーのスタイル
+======================================== */
+
+.input-field__input::placeholder,
+.input-field__select::placeholder,
+.input-field__textarea::placeholder {
+  color: #a0aec0;
+  font-weight: 100;
+  opacity: 1;
 }

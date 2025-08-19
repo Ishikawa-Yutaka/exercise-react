@@ -1,4 +1,4 @@
-import React, { type FC, type ChangeEvent } from 'react';
+import React, { type FC, type ChangeEvent } from "react";
 
 // 【課題24】SelectOptionインターフェースを定義してください
 interface SelectOption {
@@ -33,11 +33,11 @@ export const SelectField: FC<SelectFieldProps> = ({
   const showError = touched && error;
 
   return (
-    <div className="form-field">
+    <div className="input-field">
       {/* 【課題26】ラベル要素を実装してください */}
-      <label htmlFor={name} className="form-field__label">
-        {label}
-        {required && <span className="required-mark">*</span>}
+      <label htmlFor={name} className="input-field__label">
+        {label}を選択
+        {required && <span className="input-field__required">*</span>}
       </label>
 
       {/* 【課題27】select要素を実装してください */}
@@ -47,7 +47,9 @@ export const SelectField: FC<SelectFieldProps> = ({
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        className={`form-field__select ${showError ? 'form-field__select--error' : ''}`}
+        className={`input-field__select ${
+          showError ? "input-field__select--error" : ""
+        }`}
         aria-invalid={!!showError}
         aria-describedby={showError ? `${name}-error` : undefined}
       >
@@ -63,11 +65,7 @@ export const SelectField: FC<SelectFieldProps> = ({
       </select>
 
       {showError && (
-        <span
-          id={`${name}-error`}
-          className="form-field__error"
-          role="alert"
-        >
+        <span id={`${name}-error`} className="input-field__error" role="alert">
           {error}
         </span>
       )}

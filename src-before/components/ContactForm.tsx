@@ -1,9 +1,9 @@
-import React, { type FC } from 'react';
-import { useForm } from '../hooks/useForm';
-import { CheckboxField } from './CheckboxField';
-import { InputField } from './InputField';
-import { RadioGroup } from './RadioGroup';
-import { SelectField } from './SelectField';
+import React, { type FC } from "react";
+import { useForm } from "../hooks/useForm";
+import { CheckboxField } from "./CheckboxField";
+import { InputField } from "./InputField";
+import { RadioGroup } from "./RadioGroup";
+import { SelectField } from "./SelectField";
 
 // 【課題41】FormDataインターフェースを定義してください
 interface FormData {
@@ -18,11 +18,11 @@ interface FormData {
 export const ContactForm: FC = () => {
   // 【課題42】フォームの初期値を定義してください
   const initialValues: FormData = {
-    name: '',
-    email: '',
-    subject: '',
-    category: 'general',
-    message: '',
+    name: "",
+    email: "",
+    subject: "",
+    category: "general",
+    message: "",
     subscribe: false,
   };
 
@@ -49,38 +49,47 @@ export const ContactForm: FC = () => {
 
   // 【課題44】フォーム送信処理を実装してください
   const handleFormSubmit = async (formData: FormData) => {
-    console.log('Form submitted', formData);
+    console.log("Form submitted", formData);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    alert('フォームが正常に送信されました！');
+    alert("フォームが正常に送信されました！");
     resetForm();
   };
 
   // 【課題45】useFormフックを使用してください
-  const { values, errors, touched, isSubmitting, isValid, handleChange, handleBlur, handleSubmit, resetForm } =
-    useForm<FormData>({
-      initialValues,
-      validationRules,
-      onSubmit: handleFormSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    isValid,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    resetForm,
+  } = useForm<FormData>({
+    initialValues,
+    validationRules,
+    onSubmit: handleFormSubmit,
+  });
 
   // カテゴリーオプション
   const categoryOptions = [
-    { value: 'general', label: '一般的な質問' },
-    { value: 'technical', label: '技術的な質問' },
-    { value: 'billing', label: '請求に関する質問' },
-    { value: 'other', label: 'その他' },
+    { value: "general", label: "一般的な質問" },
+    { value: "technical", label: "技術的な質問" },
+    { value: "billing", label: "請求に関する質問" },
+    { value: "other", label: "その他" },
   ];
 
   // 件名オプション
   const subjectOptions = [
-    { value: 'inquiry', label: 'お問い合わせ' },
-    { value: 'feedback', label: 'フィードバック' },
-    { value: 'support', label: 'サポート' },
+    { value: "inquiry", label: "お問い合わせ" },
+    { value: "feedback", label: "フィードバック" },
+    { value: "support", label: "サポート" },
   ];
 
   return (
     <form onSubmit={handleSubmit} className="contact-form" noValidate>
-      <h2>お問い合わせフォーム</h2>
+      <h2 className="contact-form__title">お問い合わせフォーム</h2>
 
       {/* 【課題46】名前入力フィールドを実装してください */}
       <InputField
@@ -90,9 +99,9 @@ export const ContactForm: FC = () => {
         error={errors.name}
         touched={touched.name}
         required
-        placeholder="山田 太郎"
+        placeholder="（例）山田 太郎"
         onChange={handleChange}
-        onBlur={() => handleBlur('name')}
+        onBlur={() => handleBlur("name")}
       />
 
       {/* 【課題47】メールアドレス入力フィールドを実装してください */}
@@ -104,9 +113,9 @@ export const ContactForm: FC = () => {
         error={errors.email}
         touched={touched.email}
         required
-        placeholder="example@email.com"
+        placeholder="（例）example@email.com"
         onChange={handleChange}
-        onBlur={() => handleBlur('email')}
+        onBlur={() => handleBlur("email")}
       />
 
       {/* 【課題48】件名選択フィールドを実装してください */}
@@ -119,7 +128,7 @@ export const ContactForm: FC = () => {
         touched={touched.subject}
         required
         onChange={handleChange}
-        onBlur={() => handleBlur('subject')}
+        onBlur={() => handleBlur("subject")}
       />
 
       {/* カテゴリー選択 */}
@@ -131,33 +140,35 @@ export const ContactForm: FC = () => {
         error={errors.category}
         touched={touched.category}
         onChange={handleChange}
-        onBlur={() => handleBlur('category')}
+        onBlur={() => handleBlur("category")}
       />
 
       {/* メッセージ入力 */}
-      <div className="form-field">
-        <label htmlFor="message" className="form-field__label">
+      <div className="input-field">
+        <label htmlFor="message" className="input-field__label">
           メッセージ
-          <span className="form-field__required">*</span>
+          <span className="input-field__required">*</span>
         </label>
         <textarea
           id="message"
           name="message"
           value={values.message}
           onChange={handleChange}
-          onBlur={() => handleBlur('message')}
-          className={`form-field__textarea ${
-            touched.message && errors.message ? 'form-field__textarea--error' : ''
+          onBlur={() => handleBlur("message")}
+          className={`input-field__textarea ${
+            touched.message && errors.message
+              ? "input-field__textarea--error"
+              : ""
           }`}
           rows={5}
           placeholder="お問い合わせ内容をご記入ください"
           aria-invalid={touched.message && !!errors.message}
           aria-describedby={
-            touched.message && errors.message ? 'message-error' : undefined
+            touched.message && errors.message ? "message-error" : undefined
           }
         />
         {touched.message && errors.message && (
-          <span id="message-error" className="form-field__error" role="alert">
+          <span id="message-error" className="input-field__error" role="alert">
             {errors.message}
           </span>
         )}
@@ -171,22 +182,22 @@ export const ContactForm: FC = () => {
         error={errors.subscribe}
         touched={touched.subscribe}
         onChange={handleChange}
-        onBlur={() => handleBlur('subscribe')}
+        onBlur={() => handleBlur("subscribe")}
       />
 
       {/* 【課題50】フォームボタンを実装してください */}
-      <div className="form-actions">
+      <div className="contact-form__actions">
         <button
           type="submit"
           disabled={!isValid || isSubmitting}
-          className="button button--primary"
+          className="btn btn--primary"
         >
-          {isSubmitting ? '送信中...' : '送信'}
+          {isSubmitting ? "送信中..." : "送信"}
         </button>
         <button
           type="button"
           onClick={resetForm}
-          className="button button--secondary"
+          className="btn btn--secondary"
         >
           リセット
         </button>
