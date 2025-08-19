@@ -1,64 +1,71 @@
-import React, { type FC, type ChangeEvent } from 'react';;
+import React, { type FC, type ChangeEvent } from "react";
 
-// 【課題18】InputFieldPropsインターフェースを定義してください
 interface InputFieldProps {
   label: string;
   name: string;
-  type?: 'text' | 'email' | 'password' | 'tel' | 'number';
+  type?: "text" | "email" | "password" | "tel" | "number";
   value: string | number;
   error?: string;
   touched?: boolean;
   required?: boolean;
   placeholder?: string;
+  disabled?: boolean;
+  autoComplete?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur: () => void;
+  className?: string;
 }
 
-// 【課題19】InputFieldコンポーネントを実装してください
 export const InputField: FC<InputFieldProps> = ({
   label,
   name,
-  type = 'text',
+  type = "text",
   value,
   error,
   touched,
-  required,
+  required = false,
   placeholder,
+  disabled = false,
+  autoComplete,
   onChange,
   onBlur,
+  className = "",
 }) => {
-  // 【課題20】エラー表示条件を実装してください
-  const showError = touched && error;
+  const showError = !!touched && !!error;
+  const fieldId = `field-${name}`;
+  const errorId = `${fieldId}-error`;
 
   return (
-    <div className="input-field">
-      {/* 【課題21】ラベル要素を実装してください */}
-      <label htmlFor={name} className="input-field__label">
+    <div className={`input-field ${className}`}>
+      <label htmlFor={fieldId} className="input-field__label">
         {label}
-        {required && <span className="input-field__required">*</span>}
+        {required && (
+          <span className="input-field__required" aria-label="必須">
+            *
+          </span>
+        )}
       </label>
 
-      {/* 【課題22】input要素を実装してください */}
       <input
-        id={name}
+        id={fieldId}
         name={name}
         type={type}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
         onBlur={onBlur}
-        className={`input-field__input ${showError ? 'input-field__input--error' : ''}`}
-        aria-invalid={!!showError}
-        aria-describedby={showError ? `${name}-error` : undefined}
+        disabled={disabled}
+        required={required}
+        autoComplete={autoComplete}
+        className={`input-field__input ${
+          showError ? "input-field__input--error" : ""
+        }`}
+        aria-invalid={showError}
+        aria-describedby={showError ? errorId : undefined}
       />
 
-      {/* 【課題23】エラーメッセージを実装してください */}
       {showError && (
-        <span
-          id={`${name}-error`}
-          className="input-field__error"
-          role="alert"
-        >
+        <span id={errorId} className="input-field__error" role="alert">
           {error}
         </span>
       )}

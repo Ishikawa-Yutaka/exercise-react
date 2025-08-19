@@ -126,8 +126,7 @@ export function useForm<T extends Record<string, any>>({
   }, [initialValues, values, validateField]);
 
   // フォームの有効性チェック
-  const isValid =
-    Object.keys(errors).length === 0 && Object.keys(touched).length > 0;
+  const isValid = Object.keys(errors).length === 0; // 修正
 
   // 【課題10】onChange ハンドラーを実装してください
   // 要件:

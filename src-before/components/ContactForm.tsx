@@ -88,7 +88,7 @@ export const ContactForm: FC = () => {
   ];
 
   return (
-    <form onSubmit={handleSubmit} className="contact-form" noValidate>
+    <form onSubmit={handleSubmit} className="contact-form" noValidate data-testid="contact-form">
       <h2 className="contact-form__title">お問い合わせフォーム</h2>
 
       {/* 【課題46】名前入力フィールドを実装してください */}
